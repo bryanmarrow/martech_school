@@ -1,16 +1,16 @@
 <?php
 
 $db = [
-    'host' => 'localhost',
-    'username' => 'root',
-    'password' => '',
-    'db' => 'martech_school'
+    'host' => '162.241.203.101',
+    'username' => 'eurosonl_edutrebol',
+    'password' => 'exT@4uR95]?Y',
+    'db' => 'eurosonl_edutrebol'
 ];
-
-$nombrePagina='Martech Studio';
+    
+$nombrePagina='EDUTREBOL';
 $descripcionPagina='Inovando por un mejor futuro';
 $imagenPagina='';
-$tagsPagina="salsa, bachata, euroson latino, mexico";
-$authorPagina="Martech";
+$tagsPagina="student, platform, gestion, escuelas";
+$authorPagina="Martech Studio";
 
 ?>

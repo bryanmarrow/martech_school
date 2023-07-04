@@ -1,0 +1,8 @@
+#pswd_info .invalid{
+
+    color: red;
+}
+
+#pswd_info .valid{
+    color: green;
+}

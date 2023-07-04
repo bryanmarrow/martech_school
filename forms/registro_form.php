@@ -1,4 +1,4 @@
-<form id="form_registro" class="needs-validation" novalidate>
+<form id="form_registro" action="" >
     <div class="row row-cols-1 row-cols-sm-2">
         <div class="col-lg-6 mb-4">
             <input class="form-control form-control-lg" name="nombre" type="text" placeholder="Nombre" required>
@@ -14,16 +14,28 @@
         </div>
     </div>
     <div class="password-toggle mb-4">
-        <input class="form-control form-control-lg" type="password" name="password" placeholder="Contraseña" required>
+        <input class="form-control form-control-lg usuario_password" id="password1" type="password" name="password" placeholder="Contraseña" required>
         <label class="password-toggle-btn" aria-label="Show/hide password">
             <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
         </label>
     </div>
     <div class="password-toggle mb-4">
-        <input class="form-control form-control-lg" type="password" placeholder="Confirmar contraseña" required>
+        <input class="form-control form-control-lg" type="password" id="password2" name="password2" placeholder="Confirmar contraseña" required>
         <label class="password-toggle-btn" aria-label="Show/hide password">
             <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
         </label>
+    </div>
+    <div id="pswd_info">        
+        <p class="m-1">La contraseña debe cumplir los siguientes requerimientos:</p>
+        <ul>
+            <li id="letter" class="invalid">Al menos <strong>una letra</strong></li>
+            <li id="capital" class="invalid">Al menos <strong>una letra mayúscula</strong></li>
+            <li id="number" class="invalid">Al menos <strong>un número</strong></li>
+            <li id="length" class="invalid">Al menos <strong>8 carácteres</strong></li>
+            <li id="null" class="invalid">Debe <strong>confirmar la contraseña</strong></li>
+            <li id="match" class="invalid">Las contraseñas <strong>deben cohincidir</strong></li>
+            <li id="blank" class="invalid">Las contraseñas <strong>no deben tener espacios</strong></li>
+        </ul>
     </div>
     <div class="pb-4">
         <div class="form-check my-2">
