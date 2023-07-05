@@ -2,12 +2,6 @@
 var DataPostController;
 var validateFormRegistro;
 
-// $(document).ready(function(){
-    
-// })
-
-
-
 $('#form_registro').submit(async (e)=> {
     e.preventDefault();    
     let form_registro = document.getElementById('form_registro');
@@ -51,6 +45,34 @@ $('#form_registro').submit(async (e)=> {
 
 })
 
+
+$('#form_iniciosesion').submit(async (e)=> {
+    e.preventDefault();
+    let form_iniciosesion = document.getElementById('form_iniciosesion');
+    let formData = new FormData(form_iniciosesion);
+    
+    let {respuesta, mensaje} = await sendDataForm('usuario_controller', 'iniciar_sesion',formData);
+    switch(respuesta){
+        case 'success':
+            Swal.fire({                
+                icon: 'success',
+                title: 'Inicio de sesión correcto',
+                showConfirmButton: false,
+                timer: 3500
+              })
+            break;
+        case 'error':
+            Swal.fire({                
+                icon: 'error',
+                title: 'ERROR',
+                text: mensaje,
+                showConfirmButton: true,                
+            })
+            break;
+    }  
+    
+
+})
 
 $('#form_registro input').keyup(function (){
     

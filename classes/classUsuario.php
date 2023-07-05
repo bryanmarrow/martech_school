@@ -11,12 +11,42 @@
         public $email;
 
         public function validacion_UsuarioDuplicado($dataUsuario){
-            $proc_stored='proc_usuario_validarUsuarioDuplicado';
+            $proc_stored='proc_usuario_validar_usuario_duplicado';
             $responseAction=getDataProcStored($proc_stored, $dataUsuario);   
             
             // var_dump($responseAction);
             return $responseAction;        
 
+        }
+
+        public function validacion_UsuarioRegistrado($dataUsuario){
+            $proc_stored='proc_usuario_validar_usuario_registrado';
+            $responseAction=getDataProcStored($proc_stored, $dataUsuario);   
+            
+            // var_dump($responseAction);
+            return $responseAction;    
+        }
+
+        public function validacion_ConfirmacionRegistro($dataUsuario){
+            $proc_stored='proc_usuario_validar_confirmacion_registro';
+            $responseAction=getDataProcStored($proc_stored, $dataUsuario);   
+            
+            // var_dump($responseAction);
+            return $responseAction;    
+        }
+
+        public function validacion_UsuarioActivo($dataUsuario){
+            $proc_stored='proc_usuario_validar_usuario_activo';
+            $responseAction=getDataProcStored($proc_stored, $dataUsuario);
+            return $responseAction;
+        }
+
+        public function validacion_UsuarioPassword($dataUsuario){
+            $proc_stored='proc_usuario_validar_usuario_password';
+            $responseAction=getDataProcStored($proc_stored, $dataUsuario);   
+            
+            // var_dump($responseAction);
+            return $responseAction;    
         }
 
         public function registrarUsuario($dataUsuario){            
@@ -25,22 +55,28 @@
             return $responseAction;        
         }
 
+
+        
+
     }
 
     function getDataProcStored($proc_stored, $data_proc_tore){
         global $dbConn;
         try{
             $queryProcedimiento="CALL $proc_stored('".implode("','",$data_proc_tore)."')";
+            // var_dump($queryProcedimiento);
+
             $sql = $dbConn->prepare($queryProcedimiento);        
             $sql->execute();         
             
-            $dataSuccessResponse=$sql->fetchAll();
+            $dataSuccessResponse=$sql->fetch(PDO::FETCH_ASSOC);
             
             
 
             $datarespuesta=array(
                 'respuesta' => 'success',
-                'num_results' => $sql->rowCount()
+                'num_results' => $sql->rowCount(),
+                'data' => $dataSuccessResponse
             );
 
         }catch(PDOException $e){
