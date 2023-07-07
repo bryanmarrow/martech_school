@@ -5,8 +5,9 @@
   $rootPath = "./";  
   include $rootPath.'config/db.php';
   include  $rootPath.'controllers/user_session.php';  
+
+  $nombreSeccion='Tutores';
   
-  $nombreSeccion='Mi cuenta';
   $title = isset($_GET['title'])? $_GET['title'] : $nombreSeccion.' - '.$nombrePagina;
   $description = isset($_GET['description'])? $_GET['description'] : $descripcionPagina;
   $keywords = isset($_GET['keywords'])? $_GET['keywords'] : $tagsPagina;
@@ -16,8 +17,9 @@
   $ogimagen = isset($_GET['ogimagen'])? $_GET['ogimagen'] : $imagenPagina;
 
   
+  
   require($rootPath."templates/header.php");
-  require($rootPath."views/mi-cuenta_view.php");
+  require($rootPath."views/tutores_view.php");
   require($rootPath."templates/footer.php");
 
 

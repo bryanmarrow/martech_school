@@ -75,7 +75,7 @@
           <div class="dropdown nav d-none d-sm-block order-lg-3"><a class="nav-link d-flex align-items-center p-0" href="#" data-bs-toggle="dropdown" aria-expanded="false">
               <div class="ps-2">
                 <div class="fs-xs lh-1 opacity-60">Hola,</div>
-                <div class="fs-sm dropdown-toggle">Isabella</div>
+                <div class="fs-sm dropdown-toggle"><?= $nombreUsuarioLog ?></div>
               </div></a>
             <div class="dropdown-menu dropdown-menu-end my-1">
               <h6 class="dropdown-header fs-xs fw-medium text-muted text-uppercase pb-1">Account</h6><a class="dropdown-item" href="account-overview.html"><i class="ai-user-check fs-lg opacity-70 me-2"></i>Overview</a><a class="dropdown-item" href="account-settings.html"><i class="ai-settings fs-lg opacity-70 me-2"></i>Settings</a><a class="dropdown-item" href="account-billing.html"><i class="ai-wallet fs-base opacity-70 me-2 mt-n1"></i>Billing</a>
@@ -88,22 +88,26 @@
           <nav class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav navbar-nav-scroll me-auto" style="--ar-scroll-height: 520px;">
               
-              <li class="nav-item"><a class="nav-link" href="components/typography.html">UI Kit</a></li>
-              <li class="nav-item"><a class="nav-link" href="docs/getting-started.html">Docs</a></li>
+              <!-- <li class="nav-item"><a class="nav-link" href="components/typography.html">UI Kit</a></li>
+              <li class="nav-item"><a class="nav-link" href="docs/getting-started.html">Docs</a></li> -->
               <!-- User signed in state. Account dropdown on screens > 576px-->
               <li class="nav-item dropdown d-sm-none border-top mt-2 pt-2"><a class="nav-link" href="#" data-bs-toggle="dropdown" aria-expanded="false">
                 
                   <div class="ps-2">
-                    <div class="fs-xs lh-1 opacity-60">Hello,</div>
-                    <div class="fs-sm dropdown-toggle">Isabella</div>
+                    <div class="fs-xs lh-1 opacity-60">Hola,</div>
+                    <div class="fs-sm dropdown-toggle"><?= $nombreUsuarioLog ?></div>
                   </div></a>
                 <div class="dropdown-menu">
-                  <h6 class="dropdown-header fs-xs fw-medium text-muted text-uppercase pb-1">Account</h6><a class="dropdown-item" href="account-overview.html"><i class="ai-user-check fs-lg opacity-70 me-2"></i>Overview</a><a class="dropdown-item" href="account-settings.html"><i class="ai-settings fs-lg opacity-70 me-2"></i>Settings</a><a class="dropdown-item" href="account-billing.html"><i class="ai-wallet fs-base opacity-70 me-2 mt-n1"></i>Billing</a>
-                  <h6 class="dropdown-header fs-xs fw-medium text-muted text-uppercase pt-3 pb-1">Dashboard</h6><a class="dropdown-item" href="account-orders.html"><i class="ai-cart fs-lg opacity-70 me-2"></i>Orders</a><a class="dropdown-item" href="account-earnings.html"><i class="ai-activity fs-lg opacity-70 me-2"></i>Earnings</a><a class="dropdown-item d-flex align-items-center" href="account-chat.html"><i class="ai-messages fs-lg opacity-70 me-2"></i>Chat<span class="badge bg-danger ms-3">4</span></a><a class="dropdown-item" href="account-favorites.html"><i class="ai-heart fs-lg opacity-70 me-2"></i>Favorites</a>
-                  <div class="dropdown-divider"></div><a class="dropdown-item" href="account-signin.html"><i class="ai-logout fs-lg opacity-70 me-2"></i>Sign out</a>
+                  
+                  <div class="dropdown-divider"></div>
+                    <button type="button" class="dropdown-item" onclick="logOut()">
+                      <i class="ai-logout fs-lg opacity-70 me-2"></i>Cerrar sesión
+                    </button>
                 </div>
               </li>
             </ul>
           </nav>
         </div>
       </header>
+
+     

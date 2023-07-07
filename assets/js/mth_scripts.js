@@ -69,12 +69,8 @@ $('#form_iniciosesion').submit(async (e)=> {
     switch(respuesta){
         case 'success':
             loadeRemove();
-            Swal.fire({                
-                icon: 'success',
-                title: 'Inicio de sesión correcto',
-                showConfirmButton: false,
-                timer: 3500
-              })
+            
+            window.location.href="mi-cuenta"
             break;
         case 'error':
             loadeRemove();
@@ -195,4 +191,15 @@ sendDataForm = async (data_controller, action_controller, formData) => {
 
 
     return DataPostController;
+}
+
+
+
+function logOut(){
+    $.ajax({
+        url:'controllers/logout',
+        type: 'POST'        
+    }).done(() => {
+        window.location.href="inicio-sesion";
+    })
 }

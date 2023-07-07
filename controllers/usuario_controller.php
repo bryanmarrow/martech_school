@@ -1,7 +1,7 @@
 <?php
 
     include '../classes/classUsuario.php';
-
+    
     $action=$_POST['action'];
 
     $data_response=array();
@@ -50,11 +50,18 @@
                                 'mensaje' => 'La contraseña que ha ingresado es incorrecta.'
                             );  
                         }
-                        if($validarUsuarioPassword['num_results']>0){
+                        if($validarUsuarioPassword['num_results']>0){       
+                            session_start();                            
+                            $_SESSION['data_usuario']=$validarUsuarioPassword['data'];                            
+                            $_SESSION['id_usuario']=$validarUsuarioPassword['data']['id_usuario'];
+                                                        
+
                             $data_response=array(
                                 'respuesta' => 'success',
                                 'data' => $validarUsuarioPassword['data']
                             );
+
+                            
                         }
                     }
                 }
