@@ -1,6 +1,7 @@
 
 var DataPostController;
 var validateFormRegistro;
+var loaderEdutrebol = document.querySelector('.page-loading');
 
 $('#form_registro').submit(async (e)=> {
     e.preventDefault();    
@@ -46,14 +47,28 @@ $('#form_registro').submit(async (e)=> {
 })
 
 
+loaderActive = () => {
+    loaderEdutrebol.classList.add('active')
+};
+
+loadeRemove = () => {
+    loaderEdutrebol.classList.remove('active')
+};
+
+
+
+
+
 $('#form_iniciosesion').submit(async (e)=> {
     e.preventDefault();
     let form_iniciosesion = document.getElementById('form_iniciosesion');
     let formData = new FormData(form_iniciosesion);
     
+    loaderActive();
     let {respuesta, mensaje} = await sendDataForm('usuario_controller', 'iniciar_sesion',formData);
     switch(respuesta){
         case 'success':
+            loadeRemove();
             Swal.fire({                
                 icon: 'success',
                 title: 'Inicio de sesión correcto',
@@ -62,6 +77,7 @@ $('#form_iniciosesion').submit(async (e)=> {
               })
             break;
         case 'error':
+            loadeRemove();
             Swal.fire({                
                 icon: 'error',
                 title: 'ERROR',
