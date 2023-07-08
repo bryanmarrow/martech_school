@@ -2,10 +2,6 @@
     <div class="container py-5 mt-4 mt-lg-5 mb-lg-4 my-xl-5">
         <div class="row pt-sm-2 pt-lg-0">
 
-            <?php
-                
-                var_dump($_SESSION);
-            ?>
             <!-- Sidebar (offcanvas on sreens < 992px)-->
             <?php include 'templates/sidebar_usuario.php'; ?>
             <!-- Page content-->
