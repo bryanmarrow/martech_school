@@ -27,13 +27,31 @@
             header('Content-Type: application/json');  
             print json_encode($obtener_estudiantes, JSON_UNESCAPED_UNICODE); 
             break;
-        case 'obtener_cuotas_asignadas':
+        case 'obtener_cuotas_asignadas':            
             $params = [                
-                'token_escuela' => $_POST['token_escuela'],           
-            ];     
-            $obtener_estudiantes=getFetchDataProcStored('proc_escuela_cuotas_asignadas', $params);                                  
+                'token_estudiante' => $_POST['token_estudiante'],           
+                'id_generacion' => intval($_POST['id_generacion'])
+            ];               
+            $obtener_estudiantes=getFetchDataProcStored('proc_cuotas_estudiante', $params);                                  
             header('Content-Type: application/json');  
             print json_encode($obtener_estudiantes, JSON_UNESCAPED_UNICODE); 
+            break;
+        case 'validar_cuota_pago':
+            $cuotas_validadas=array();
+            foreach ($_POST['cuotas'] as $row) {
+                $params = [                
+                    'token_estudiante' => $_POST['token_estudiante'],           
+                    'id_generacion' => $_POST['id_generacion'],
+                    'id_cuota' => $row['id_cuota']
+                ];                   
+                $obtener_estudiantes=getFetchDataProcStored('proc_validar_pago_cuota', $params);
+                $obtener_estudiantes['nombre_cuota']=$row['nombre_cuota'];
+                $obtener_estudiantes['monto_cuota']=$row['monto_cuota'];
+                // var_dump($obtener_estudiantes);
+                array_push($cuotas_validadas, $obtener_estudiantes);
+            }                        
+            header('Content-Type: application/json');  
+            print json_encode($cuotas_validadas, JSON_UNESCAPED_UNICODE); 
             break;
         default:
             $data_response=array(
