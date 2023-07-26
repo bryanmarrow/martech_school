@@ -5,6 +5,8 @@ var loaderEdutrebol = document.querySelector('.page-loading');
 
 $(document).ready(() => {
     setTutores();
+    setEstudiantes();
+    setCuotas_Estudiante();
 })
 
 $('#form_registro').submit(async (e)=> {
@@ -255,6 +257,165 @@ var setTutores = () => {
         }
         
     })
+}
+
+
+var setEstudiantes = () => {
+
+    $('#list_estudiantes_usuario').empty();
+    $.ajax({
+        url:'controllers/estudiantes_controller.php',
+        type: 'POST',
+        data: {            
+            'id_usuario': 1,
+            'action': 'obtenerestudiantes_porusuario'
+        }
+    }).done( estudiantes => {
+        
+
+        if(estudiantes.data.length==0 || estudiantes.data.length < 3){
+            
+        //     cardTutor=`<div class="col card_agregartutor">
+        //     <div class="card h-100 justify-content-center align-items-center border-dashed rounded-3 py-5 px-3 px-sm-4">
+        //         <a class="stretched-link d-flex align-items-center fw-semibold text-decoration-none my-sm-3"
+        //           data-bs-toggle="collapse" href="#collapse_form_agregar_tutor" role="button" aria-expanded="false" aria-controls="collapse_form_agregar_tutor"
+        //         >
+        //           <i class="ai-circle-plus fs-xl me-2"></i>
+        //           Agregar tutor 
+        //         </a>
+        //         </div>
+        //   </div>`;
+        //   $('#list_estudiantes_usuario').append(cardTutor);
+        }
+        if(estudiantes.data.length>0){
+            
+            estudiantes.data.forEach(element => {
+                // console.log(element)
+                rowEstudiante=`<tr>                                    
+                    <td>${element.nombre_estudiante}</td>     
+                    <td><a class="btn btn-primary btn-sm" href="cuotas?token_estudiante=${element.token_estudiante}"><i class="text-light ai-file-text mx-1"></i> Cuotas</a></td>           
+                </tr>`;
+                $('#list_estudiantes_usuario').append(rowEstudiante);
+            });
+        }
+        
+    })
+}
+
+var setCuotas_Estudiante = async () => {
+
+    token_estudiante=$('#viewgrupos_usuario_cuotas').data('token_estudiante');    
+    
+    
+    $('#viewgrupos_usuario_cuotas').empty();
+    var dataGrupos = $.ajax({
+        url:'controllers/estudiantes_controller.php',
+        type: 'POST',
+        data: {            
+            'token_estudiante': token_estudiante,
+            'action': 'obtener_cuotas_estudiante'
+        }
+    }).done( grupo_cuotas => {
+        
+        
+        
+    })
+
+    dataGrupos.then((grupo_cuotas) => {        
+        if(grupo_cuotas.data.length==0 || grupo_cuotas.data.length < 3){            
+            //     cardTutor=`<div class="col card_agregartutor">
+            //     <div class="card h-100 justify-content-center align-items-center border-dashed rounded-3 py-5 px-3 px-sm-4">
+            //         <a class="stretched-link d-flex align-items-center fw-semibold text-decoration-none my-sm-3"
+            //           data-bs-toggle="collapse" href="#collapse_form_agregar_tutor" role="button" aria-expanded="false" aria-controls="collapse_form_agregar_tutor"
+            //         >
+            //           <i class="ai-circle-plus fs-xl me-2"></i>
+            //           Agregar tutor 
+            //         </a>
+            //         </div>
+            //   </div>`;
+            //   $('#list_estudiantes_usuario').append(cardTutor);
+            }
+            if(grupo_cuotas.data.length>0){
+                
+                grupo_cuotas.data.forEach(element => {         
+                    
+                    token_escuela=element.token_escuela;
+
+                    
+                    list_cuotas=$.ajax({
+                        url: 'controllers/estudiantes_controller.php',
+                        type: 'POST',
+                        data: {
+                            'token_escuela': token_escuela,
+                            'action': 'obtener_cuotas_asignadas'
+                        }
+                    })
+
+                    var divCuotas='';    
+                    list_cuotas.then((data_cuotas)=> {
+                        
+                        data_cuotas.data.forEach(element => {
+                            divCuotas+=`<div class="mb-3">
+                            <label for="text-input" class="form-label">Text</label>
+                            <input class="form-control" type="text" id="text-input" value="Artisanal kale">
+                            </div>`;
+                        })
+
+                        
+                    })
+                    console.log(divCuotas);
+                    
+
+                    cardCuotas=`<div class="accordion-item border-top mb-0" data-token_escuela='${token_escuela}'>
+                        <div class="accordion-header">
+                        <a class="accordion-button d-flex fs-4 fw-normal text-decoration-none py-3 collapsed" href="#orderOne" data-bs-toggle="collapse" aria-expanded="false" aria-controls="orderOne">
+                            <div class="d-flex justify-content-between w-100" style="max-width: 440px;">
+                            <div class="me-3 me-sm-4">
+                                <div class="fs-sm text-muted">${element.nombrecompleto_grupo}</div><span class="badge bg-faded-info text-info fs-xs">In progress</span>
+                            </div>
+                            <div class="me-3 me-sm-4">
+                                <div class="d-none d-sm-block fs-sm text-muted mb-2">Nivel</div>
+                                <div class="d-sm-none fs-sm text-muted mb-2">Nivel</div>
+                                <div class="fs-sm fw-medium text-dark">${element.nombre_nivel}</div>
+                            </div>
+                            <div class="me-3 me-sm-4">
+                                <div class="fs-sm text-muted mb-2">Ciclo Escolar</div>
+                                <div class="fs-sm fw-medium text-dark">${element.nombre_ciclo_escolar}</div>
+                            </div>
+                            </div>
+                            <div class="accordion-button-img d-none d-sm-flex ms-auto">
+                            
+                            </div>
+                        </a>
+                        </div>
+                        <div class="accordion-collapse collapse" id="orderOne" data-bs-parent="#orders">
+                        <div class="accordion-body">                        
+                            <div class="bg-secondary rounded-1 p-4 my-2">
+                            <div class="row">
+                                <div class="col-sm-5 col-md-3 col-lg-4 mb-3 mb-md-0">
+                                <div class="fs-sm fw-medium text-dark mb-1">Payment:</div>
+                                <div class="fs-sm">Upon the delivery</div><a class="btn btn-link py-1 px-0 mt-2" href="#"><i class="ai-time me-2 ms-n1"></i>Order history</a>
+                                </div>
+                                <div class="col-sm-7 col-md-5 mb-4 mb-md-0">
+                                <div class="fs-sm fw-medium text-dark mb-1">Delivery address:</div>
+                                <div class="fs-sm">401 Magnetic Drive Unit 2,<br>Toronto, Ontario, M3J 3H9, Canada</div>
+                                </div>
+                                <div class="col-md-4 col-lg-3 text-md-end">
+                                <button class="btn btn-sm btn-outline-primary w-100 w-md-auto" type="button"><i class="ai-star me-2 ms-n1"></i>Leave a review</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>`;
+                    $('#viewgrupos_usuario_cuotas').append(cardCuotas);
+                });
+            }
+
+    })
+
+
+
 }
 
 

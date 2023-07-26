@@ -1,7 +1,7 @@
 <?php
 
 $db = [
-    'host' => '162.241.203.101',
+    'host' => 'localhost',
     'username' => 'eurosonl_edutrebol',
     'password' => 'exT@4uR95]?Y',
     'db' => 'eurosonl_edutrebol'

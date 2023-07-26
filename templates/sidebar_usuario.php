@@ -18,7 +18,7 @@
                     </a>
                     <a class="nav-link fw-semibold py-2 px-0" href="tutores">
                         <i class="ai-user-check fs-5 opacity-60 me-2"></i>Padres de familia/Tutores
-                    </a><a class="nav-link fw-semibold py-2 px-0" href="account-settings.html"><i
+                    </a><a class="nav-link fw-semibold py-2 px-0" href="estudiantes"><i
                             class="ai-settings fs-5 opacity-60 me-2"></i>Mis estudiantes</a><a
                         class="nav-link fw-semibold py-2 px-0" href="account-billing.html"><i
                             class="ai-wallet fs-5 opacity-60 me-2"></i>Comunicados</a>
