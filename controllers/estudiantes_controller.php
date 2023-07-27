@@ -37,23 +37,28 @@
             print json_encode($obtener_estudiantes, JSON_UNESCAPED_UNICODE); 
             break;
         case 'validar_cuota_pago':
-            $cuotas_validadas=array();
-            foreach ($_POST['cuotas'] as $row) {
+            // var_dump($_POST);
+            $params = [                
+                'token_estudiante' => $_POST['token_estudiante'],           
+                'id_generacion' => $_POST['id_generacion'],
+                'id_cuota' => $_POST['id_cuota']
+            ];    
+            $obtener_estudiantes=getFetchDataProcStored('proc_validar_pago_cuota', $params);
+            
+
+            // $obtener_estudiantes['nombre_cuota']=$_POST['nombre_cuota'];
+            // $obtener_estudiantes['monto_cuota']=$_POST['monto_cuota'];
+            // $obtener_estudiantes['id_cuota']=$_POST['id_cuota'];
+            // $cuotas_validadas=array();
+            // foreach ($_POST['cuotas'] as $row) {
                 
-                $params = [                
-                    'token_estudiante' => $_POST['token_estudiante'],           
-                    'id_generacion' => $_POST['id_generacion'],
-                    'id_cuota' => $row['id_cuota']
-                ];                   
-                $obtener_estudiantes=getFetchDataProcStored('proc_validar_pago_cuota', $params);
-                $obtener_estudiantes['nombre_cuota']=$row['nombre_cuota'];
-                $obtener_estudiantes['monto_cuota']=$row['monto_cuota'];
-                $obtener_estudiantes['id_cuota']=$row['id_cuota'];
-                // var_dump($obtener_estudiantes);
-                array_push($cuotas_validadas, $obtener_estudiantes);
-            }                        
+                           
+           
+         
+            //     array_push($cuotas_validadas, $obtener_estudiantes);
+            // }                        
             header('Content-Type: application/json');  
-            print json_encode($cuotas_validadas, JSON_UNESCAPED_UNICODE); 
+            print json_encode($obtener_estudiantes, JSON_UNESCAPED_UNICODE); 
             break;
         case 'cargar_comprobante':
             $image_base64='';                  
