@@ -315,16 +315,16 @@ var setCuotas_Estudiante = () => {
             'token_estudiante': token_estudiante,
             'action': 'obtener_cuotas_estudiante'
         }
-    }).done(grupo_cuotas => {
+    }).done(async grupo_cuotas => {
         
         if(grupo_cuotas.data.length>0){
             
-            grupo_cuotas.data.forEach( element => {                         
+            grupo_cuotas.data.forEach( async element => {                         
 
                 token_escuela=element.token_escuela;
                 id_generacion=element.id_generacion;
 
-                // console.log(element)
+                console.log(element)
 
                 cardCuotas=`<div class="accordion-item border-top mb-0" data-token_escuela='${token_escuela}' data-id_generacion='${id_generacion}'>
                     <div class="accordion-header">
@@ -349,7 +349,7 @@ var setCuotas_Estudiante = () => {
                         </div>
                     </a>
                     </div>
-                    <div class="accordion-collapse collapse" id="grupo_${id_generacion}" data-bs-parent="#orders">
+                    <div class="accordion-collapse collapse show" id="grupo_${id_generacion}" data-bs-parent="#orders">
                     <div class="accordion-body">                        
                         <div class="bg-secondary rounded-1 p-4 my-2">                               
                             <div class="generacion_v${id_generacion} nav_cuotas">
@@ -362,7 +362,8 @@ var setCuotas_Estudiante = () => {
                 $('#viewgrupos_usuario_cuotas').append(cardCuotas);          
 
 
-                append_cuota(id_generacion, token_escuela, token_estudiante)
+                let cuota = await append_cuota(id_generacion, token_escuela, token_estudiante);
+                console.log(cuota);
                 
             });
 
@@ -372,9 +373,9 @@ var setCuotas_Estudiante = () => {
 
 }
 
-function append_cuota(id_generacion, token_escuela, token_estudiante){
+async function append_cuota(id_generacion, token_escuela, token_estudiante){
 
-    list_cuotas=$.ajax({
+    await $.ajax({
         url: 'controllers/estudiantes_controller.php',
         type: 'POST',
         data: {
@@ -382,19 +383,84 @@ function append_cuota(id_generacion, token_escuela, token_estudiante){
             'id_generacion': id_generacion,
             'action': 'obtener_cuotas_asignadas'
         }
-    }).done(data_cuotas => {
-        let pago_cuota=validar_pago_cuota(data_cuotas.data, token_estudiante, id_generacion);
+    }).done(async data_cuotas => {
+        // console.log(data_cuotas);
 
+        validacion_cuotas=await validar_pago_cuota(data_cuotas.data, token_estudiante, id_generacion);
+        console.log(validacion_cuotas);
+        
+        // if(element.num_results>0){
+
+        //     tableComprobantes=`
+        //     <p class="text-muted">Comprobantes cargados</p>
+        //     <div class="table-responsive">
+        //     <table class="table">
+        //     <thead>
+        //         <tr>
+        //         <th>#</th>
+        //         <th>Status</th>
+        //         <th>Fecha</th>                    
+        //         </tr>
+        //     </thead>
+        //     <tbody>
+        //     `;
+
+        //     element.data.forEach(element => {                    
+        //         tableComprobantes+=`<tr>                    
+        //         <td>${element.token_comprobante}</td>
+        //         <td>${element.status_comprobante}</td>
+        //         <td>${element.create_date_comprobante}</td>
+
+        //     </tr>`
+        //     })
+
+        //     tableComprobantes+=`   
+        //         </tbody>
+        //     </table>
+        //     </div>`;
+            
+        // }
+        // tableComprobantes=element.num_results>0 ? tableComprobantes : '';
+
+        // divCuotas=`
+        //     <form class="" data-token_escuela='${token_escuela}' data-token_estudiante='${token_estudiante}'>
+        //     <div class="row">
+        //         <h6 >${element.nombre_cuota}</h6>                        
+        //         <div class="col-lg-8">
+        //             <div class="mb-3">                              
+        //                 <input class="form-control form-control-sm" name="file_comprobante" type="file" id="file-input">
+        //             </div>                       
+        //         </div>
+        //         <div class="col-lg-4">
+        //             <button type="button" class="btn btn-primary btn-sm btn_cargacomprobante" data-token_estudiante='${token_estudiante}' data-idcuota='${element.id_cuota}' data-idgeneracion=${id_generacion}>
+        //                 <i class="ai-upload me-2"></i>
+        //                 Cargar comprobante
+        //             </button>
+        //         </div>
+
+                
+        //         <div class="col-lg-12">                        
+        //             ${tableComprobantes}
+        //         </div>
+        //     </div>
+        //     </form>
+        // `;
+        // $('.generacion_v'+id_generacion).append(divCuotas);
+
+        console.log();
        
     })
 
+    return validacion_cuotas;
 }
 
-function validar_pago_cuota(cuotas, token_estudiante, id_generacion){
+var data_cuotas;
+var validacion_cuotas;
 
-    // console.log(cuotas)
+async function validar_pago_cuota(cuotas, token_estudiante, id_generacion){
 
-    validar_cuota_pago=$.ajax({
+    
+    await $.ajax({
         url: 'controllers/estudiantes_controller.php',
         type: 'POST',
         data: {
@@ -403,79 +469,17 @@ function validar_pago_cuota(cuotas, token_estudiante, id_generacion){
             'cuotas': cuotas,
             'action': 'validar_cuota_pago'
         }
-    }).done(data => {
-        // console.log(data)
+    }).done(async data => {
+        // console.log(data);
 
-       data.forEach(element => {
-            
-            if(element.num_results>0){
+        data_cuotas=data;
 
-                tableComprobantes=`<div class="table-responsive">
-                <table class="table">
-                <thead>
-                    <tr>
-                    <th>#</th>
-                    <th>Status</th>
-                    <th>Fecha</th>                    
-                    </tr>
-                </thead>
-                <tbody>
-                `;
-                element.data.forEach(element => {                    
-                    tableComprobantes+=`<tr>                    
-                    <td>${element.token_comprobante}</td>
-                    <td>${element.status_comprobante}</td>
-                    <td>${element.create_date_comprobante}</td>
-
-                </tr>`
-                })
-
-                tableComprobantes+=`   
-                    </tbody>
-                </table>
-                </div>`;
-
-                
-
-                divCuotas=`
-                    <form class="" data-token_escuela='${token_escuela}' data-token_estudiante='${token_estudiante}'>
-                    <div class="row">
-                        <h5>${element.nombre_cuota}</h5>                        
-                        <div class="col-lg-6">
-                            <div class="mb-3">  
-                                <label for="file-input" class="form-label">Cargar archivo</label>
-                                <input class="form-control" type="file" id="file-input">
-                            </div>
-                        </div>
-
-                        <h5 class="text-muted">Comprobantes cargados</h5>
-                        <div class="col-lg-12">
-                            ${tableComprobantes}
-                        </div>
-                    </div>
-                    </form>
-                `;
-                $('.generacion_v'+id_generacion).append(divCuotas);
-            }else if(element.num_results==0){
-                divCuotas=`
-                    <form class="" data-token_escuela='${token_escuela}' data-token_estudiante='${token_estudiante}'>
-                    <div class="row">
-                        <h5>${element.nombre_cuota}</h5>
-                        
-                        <div class="col-lg-6">
-                            <div class="mb-3">  
-                                <label for="file-input" class="form-label">Cargar archivo</label>
-                                <input class="form-control" type="file" id="file-input">
-                            </div>
-                        </div>
-                    </div>
-                    </form>
-                `;
-                $('.generacion_v'+id_generacion).append(divCuotas);
-            }
-            
-       })
     })
+
+    // console.log(data_cuotas);
+
+    return data_cuotas;
+    
     
 }
 
@@ -570,3 +574,72 @@ async function eliminar_tutor(id_tutor){
     });
     
 }
+
+
+$(document).on('click', '.btn_cargacomprobante', function(){
+
+    let token_estudiante=$(this).data('token_estudiante'), id_cuota=$(this).data('idcuota'), id_generacion=$(this).data('idgeneracion');
+    formFile = $(this).closest('form')[0];
+
+    formDataComprobante = new FormData(formFile);
+    formDataComprobante.append('token_estudiante', token_estudiante);
+    formDataComprobante.append('idcuota', id_cuota);
+    formDataComprobante.append('id_generacion', id_generacion);
+    formDataComprobante.append('action', 'cargar_comprobante');
+
+    // for(let [name, value] of formDataComprobante) {
+    //     console.log(`${name} = ${value}`);
+    // }
+    
+
+    formInputComprobante=$(formFile).find('input')[0];
+    InputComprobante=$(formInputComprobante)[0].files;
+    
+    if(InputComprobante.length>0){
+        loaderActive();
+        $.ajax({
+            url: 'controllers/estudiantes_controller.php',
+            type: 'POST',
+            data: formDataComprobante,
+            processData: false,
+            contentType: false,
+        }).done(({respuesta, mensaje, }) => {        
+            
+            switch(respuesta){
+                case 'success':
+                    
+                    setCuotas_Estudiante();
+                    loadeRemove();
+
+                    Swal.fire({                
+                        icon: 'success',
+                        title: mensaje,
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                    
+                    break;
+                case 'error':
+                    loadeRemove();
+                    Swal.fire({                
+                        icon: 'error',
+                        title: 'ERROR',
+                        text: mensaje,
+                        showConfirmButton: true,                
+                    })
+                    break;
+            }  
+        })
+    }else if(InputComprobante.length==0){
+        Swal.fire({                
+            icon: 'error',
+            title: 'Debe ingresar un archivo',
+            showConfirmButton: false,
+            timer: 1000
+        })
+    }
+
+    
+    // console.log(formFile);
+
+})
