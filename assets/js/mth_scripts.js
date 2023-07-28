@@ -7,6 +7,10 @@ $(document).ready(() => {
     setTutores();
     setEstudiantes();
     setCuotas_Estudiante();
+    $('.js-example-basic-single').select2();
+    Fancybox.bind('[data-fancybox]', {
+        
+      });    
 })
 
 $('#form_registro').submit(async (e)=> {
@@ -272,6 +276,10 @@ var setEstudiantes = () => {
         }
     }).done( estudiantes => {
         
+        if(estudiantes.data.length>2){
+            $('.btn_collapse_agregar_estudiante').remove();
+            $('#collapse_form_agregar_estudiante').remove();
+        }
 
         if(estudiantes.data.length==0 || estudiantes.data.length < 3){
             
@@ -293,7 +301,7 @@ var setEstudiantes = () => {
                 // console.log(element)
                 rowEstudiante=`<tr>                                    
                     <td>${element.nombre_estudiante}</td>     
-                    <td><a class="btn btn-primary btn-sm" href="cuotas?token_estudiante=${element.token_estudiante}"><i class="text-light ai-file-text mx-1"></i> Cuotas</a></td>           
+                    <td><a class="btn btn-primary btn-sm" href="cuotas?token_estudiante=${element.token_estudiante}"><i class="text-light ai-file-text mx-1"></i> Cuotas</a></td>                               
                 </tr>`;
                 $('#list_estudiantes_usuario').append(rowEstudiante);
             });
@@ -410,68 +418,132 @@ async function append_cuota(id_generacion, token_escuela, token_estudiante){
                 dataCuota.nombre_cuota = cuota.nombre_cuota;
                 dataCuota.monto_cuota = cuota.monto_cuota
                 dataCuota.lista_comprobantes = validacion_cuotas.data
-               
+
+                
+                
+
                 if(validacion_cuotas.data.length>0){
 
-                    tableComprobantes=`
-                    <p class="text-muted m-0">Comprobantes cargados</p>
-                    <div class="table-responsive">
-                        <table class="table">
-                        <thead>
-                            <tr>
-                            <th>#</th>
-                            <th>Status</th>
-                            <th>Fecha</th>                    
-                            </tr>
-                        </thead>
-                        <tbody>
-                        `;
+                    console.log(validacion_cuotas.data[0].status_comprobante);
+                
+                     comprobante_aprobado=validacion_cuotas.data[0].status_comprobante!==1 ? false : true;
 
-                        validacion_cuotas.data.forEach(element => {                    
-                            tableComprobantes+=`<tr>                    
-                            <td>${element.token_comprobante}</td>
-                            <td>${element.status_comprobante}</td>
-                            <td>${element.create_date_comprobante}</td>
-
-                        </tr>`
-                        })
-
-                        tableComprobantes+=`   
-                            </tbody>
-                        </table>
-                    </div>`;
                     
-                }
-                tableComprobantes=validacion_cuotas.data.length>0 ? tableComprobantes : '';
+                    
 
-                divCuotas=`
-                   <div class="card mb-2">
-                        <div class="card-body">
-                            <form class="" data-token_escuela='${token_escuela}' data-token_estudiante='${token_estudiante}'>
-                            <div class="row">
-                                <h6 >${cuota.nombre_cuota}</h6>                        
-                                <div class="col-lg-8">
-                                    <div class="mb-3">                              
-                                        <input class="form-control form-control-sm" name="file_comprobante" type="file" id="file-input">
-                                    </div>                       
-                                </div>
-                                <div class="col-lg-4">
-                                    <button type="button" class="btn btn-primary btn-sm btn_cargacomprobante" data-token_estudiante='${token_estudiante}' data-idcuota='${cuota.id_cuota}' data-idgeneracion=${id_generacion}>
-                                        <i class="ai-upload me-2"></i>
-                                        Cargar comprobante
-                                    </button>
-                                </div>
-        
-                                
-                                <div class="col-lg-12">                        
-                                    ${tableComprobantes}
-                                </div>
+                    tableComprobantes=`
+                        <div class="card mb-2">
+                            <div class="card-body">                        
+                        <h6 >${cuota.nombre_cuota}</h6>   
+                        <p class="text-muted m-0">Comprobantes cargados</p>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                        <th>#</th>
+                                        <th>Ver comprobante</th>
+                                        <th>Status</th>
+                                        <th>Fecha</th>                    
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+                    `;
+
+                    validacion_cuotas.data.forEach(element => {    
+                        
+                        
+                        console.log(element);
+                        type_fancy=element.format_comprobante=='application/pdf' ? 'iframe' : '';
+
+                        tableComprobantes+=`<tr>                    
+                        <td>${element.token_comprobante}</td>
+                        <td><a
+                            data-fancybox
+
+                            data-srce="data:${element.format_comprobante};base64, ${element.file_comprobante}"
+                            href="data:${element.format_comprobante};base64, ${element.file_comprobante}"
+                            data-type="${type_fancy}"
+                            
+
+                            data-caption="${element.token_comprobante}"
+                            class="btn btn-primary btn-sm"                            
+                        >
+                            Ver
+                        </a>
+                        </td>
+                        <td>
+                            ${element.badge_status}                            
+                        </td>                        
+                        <td>${element.create_date_comprobante}</td>
+
+                    </tr>`
+                    })
+
+                    tableComprobantes+=`   
+                                    </tbody>
+                                </table>                            
                             </div>
-                            </form>
+                            
+                          
+                    `;
+
+                    
+                    if(comprobante_aprobado==true){
+                        
+                        formComprobante=`<form class="" data-token_escuela='${token_escuela}' data-token_estudiante='${token_estudiante}'>
+                        <div class="row">                            
+                            <div class="col-lg-8">
+                                <div class="mb-3">                              
+                                    <input class="form-control form-control-sm" name="file_comprobante" type="file" id="file-input">
+                                </div>                       
+                            </div>
+                            <div class="col-lg-4">
+                                <button type="button" class="btn btn-primary btn-sm btn_cargacomprobante" data-token_estudiante='${token_estudiante}' data-idcuota='${cuota.id_cuota}' data-idgeneracion=${id_generacion}>
+                                    <i class="ai-upload me-2"></i>
+                                    Cargar comprobante
+                                </button>
+                            </div>        
                         </div>
-                   </div>
-                `;
-                $('.generacion_v'+id_generacion).append(divCuotas);
+                        </form>`;            
+                        tableComprobantes+=`${formComprobante}`;
+                    }
+
+                    tableComprobantes+=`</div>
+                    </div>`;
+                   
+
+                    $('.generacion_v'+id_generacion).append(tableComprobantes);
+                }
+                
+                if(validacion_cuotas.data.length==0){
+                    divCuotas=`
+                    <div class="card mb-2">
+                            <div class="card-body">
+                                <form class="" data-token_escuela='${token_escuela}' data-token_estudiante='${token_estudiante}'>
+                                <div class="row">
+                                    <h6 >${cuota.nombre_cuota}</h6>                        
+                                    <div class="col-lg-8">
+                                        <div class="mb-3">                              
+                                            <input class="form-control form-control-sm" name="file_comprobante" type="file" id="file-input">
+                                        </div>                       
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <button type="button" class="btn btn-primary btn-sm btn_cargacomprobante" data-token_estudiante='${token_estudiante}' data-idcuota='${cuota.id_cuota}' data-idgeneracion=${id_generacion}>
+                                            <i class="ai-upload me-2"></i>
+                                            Cargar comprobante
+                                        </button>
+                                    </div>        
+                                </div>
+                                </form>
+                            </div>
+                    </div>
+                    `;
+                    $('.generacion_v'+id_generacion).append(divCuotas);
+                }
+
+                
+                
 
         
             })
@@ -609,16 +681,23 @@ $(document).on('click', '.btn_cargacomprobante', function(){
     formDataComprobante.append('idcuota', id_cuota);
     formDataComprobante.append('id_generacion', id_generacion);
     formDataComprobante.append('action', 'cargar_comprobante');
-
-    // for(let [name, value] of formDataComprobante) {
-    //     console.log(`${name} = ${value}`);
-    // }
+    
+    
     
 
     formInputComprobante=$(formFile).find('input')[0];
     InputComprobante=$(formInputComprobante)[0].files;
     
+    // for(let [name, value] of formDataComprobante) {
+    //     console.log(`${name} = ${value}`);
+    // }
+
+    console.log()
+    
     if(InputComprobante.length>0){
+        formDataComprobante.append('formato_comprobante', InputComprobante[0].type);
+        
+
         loaderActive();
         $.ajax({
             url: 'controllers/estudiantes_controller.php',
@@ -665,4 +744,88 @@ $(document).on('click', '.btn_cargacomprobante', function(){
     
     // console.log(formFile);
 
+})
+
+
+$('#select_escuelas').change(function() {
+    id_escuela=$(this).find(":selected").val();
+    $('#datalist-options').attr('disabled', false);
+    $('#btn_addestudiante').attr('disabled', false);
+
+    if(id_escuela==''){
+        $('#datalist-options').attr('disabled', true);
+        $('#btn_addestudiante').attr('disabled', true);
+        return;
+    }
+    $.ajax({
+        url: "controllers/estudiantes_controller.php",
+        data: { id_escuela, action: 'autocomplete_estudiantes' },                
+        type: "POST",
+        success: function(data) {
+            console.log()
+            $('#datalist-options').html(data);
+            // $('.suggest-element').on('click', function(){
+            //         $('.input_curp_estudiante').empty();
+            //         $('.input_curp_estudiante').text($(this).data('curp_nombre'));
+            //         $('.input_curp_estudiante').val($(this).data('curp_nombre'));
+
+            //         console.log($(this).data('id_estudiante'))
+            //         $('#suggestions').fadeOut(10);                                      
+            //         return false;
+            // });    
+            // $(document).on( "keydown", '#suggestions', function() {
+            //     console.log('entro')
+            // });
+        }
+    });
+})
+
+$(document).on('click', '#btn_addestudiante', function(){
+    
+    id_estudiante=$('#datalist-options').find(":selected").val();
+    // console.log(id_estudiante);
+    if(id_estudiante==''){
+        Swal.fire({                
+            icon: 'error',
+            title: 'ERROR',
+            text: 'Debe seleccionar un estudiante',
+            showConfirmButton: true,                
+        })
+        return;
+    }
+    $.ajax({
+        url: "controllers/estudiantes_controller.php",
+        data: { id_estudiante, action: 'agregar_estudiante' },                
+        type: "POST",
+        success: function({respuesta, mensaje}) {
+            loaderActive();
+            switch(respuesta){
+                case 'success':
+                    $('#collapse_form_agregar_estudiante').collapse('hide');
+                    $('#form_agregar_estudiante').trigger('reset');   
+                    $('#datalist-options').empty();
+                    setEstudiantes();
+                    loadeRemove();
+        
+                    Swal.fire({                
+                        icon: 'success',
+                        title: mensaje,
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                     
+                    break;
+                case 'error':
+                    loadeRemove();
+                    Swal.fire({                
+                        icon: 'error',
+                        title: 'ERROR',
+                        text: mensaje,
+                        showConfirmButton: true,                
+                    })
+                    break;
+            }                       
+        }
+    });
+    
 })

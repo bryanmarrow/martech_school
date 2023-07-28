@@ -49,6 +49,8 @@
     <link rel="stylesheet" media="screen" href="assets/css/page-loader.css">   
     <link rel="stylesheet" media="screen" href="assets/css/estilo_edutrebol.css">   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>    
   </head>
 
   <!-- Body-->

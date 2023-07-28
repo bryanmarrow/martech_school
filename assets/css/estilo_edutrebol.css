@@ -6,3 +6,29 @@
 #pswd_info .valid{
     color: green;
 }
+
+#suggestions {
+    height: auto;
+    position: absolute;
+    top: 45px;
+    z-index: 9999;
+    width: 100%;
+}
+ 
+#suggestions .suggest-element {
+    background-color: #ffffff;
+    border: 1px solid #d6d4d4;
+    cursor: pointer;
+    padding: 8px;
+    width: 100%;
+    float: left;
+    text-decoration: none;
+}
+
+.select2-container{
+    width: 100% !important;
+}
+
+.select2-container .select2-selection--single{
+    height: auto;
+}
