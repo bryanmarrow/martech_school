@@ -72,7 +72,7 @@
             $lista_html='<option value="">Seleccione una opción</option>';
 
             foreach($obtener_estudiantes['data'] as $row){                
-                $lista_html.='<option value="'.$row['estudiante_id'].'">'.$row['curp_nombre_completo'].'</option>';
+                $lista_html.='<option value="'.$row['estudiante_id'].'">'.$row['nombre_completo_estudiante'].'</option>';
             }            
             echo $lista_html;            
             break;

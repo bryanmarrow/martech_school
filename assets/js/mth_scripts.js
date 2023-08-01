@@ -563,20 +563,6 @@ async function append_cuota(id_generacion, token_escuela, token_estudiante){
 }
 
 var data_cuotas;
-// var validacion_cuotas;
-
-// async function validar_pago_cuota(cuota, token_estudiante, id_generacion){
-
-//     // console.log(cuota)
-    
-    
-
-//     // console.log(data_cuotas);
-
-//     return data_cuotas;
-    
-    
-// }
 
 
 $('#form_agregar_tutor').submit(async function(e){
