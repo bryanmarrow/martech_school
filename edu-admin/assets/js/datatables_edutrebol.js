@@ -1,6 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const id_escuela = urlParams.get('id_escuela');
 const id_generacion = urlParams.get('id_generacion');
+const id_maestro = urlParams.get('id_maestro');
 var id_comprobante;
 
 
@@ -19,9 +20,9 @@ const Alert = Swal.mixin({
 $(document).ready(() => {
     Fancybox.bind('[data-fancybox]', {
         
-    }); 
-    
+    });     
     setGruposEscuela();
+    setMateriasMaestro();
 })
 
 let tabla_comprobantes = new DataTable('#tabla_comprobantes', {    
@@ -433,3 +434,94 @@ $(document).on('click', '#btn_cargar_alumnos', function(){
     })
 })
 
+
+
+var setMateriasMaestro = () => {
+
+    $('#viewMaterias_maestro').empty();
+
+    $.ajax({
+        url:'controllers/maestros.php',
+        type: 'POST',
+        data: {            
+            'id_maestro': id_maestro,
+            'action': 'get_materias_maestro'
+        }
+    }).done( materias => {
+        console.log(materias)
+
+        materias.forEach(data => {
+            cardMateria=`
+            <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="d-flex d-sm-block justify-content-between">
+                    <div class="border-bottom-sm mb-sm-4">
+                      <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center icon-wrapper-sm shadow-primary-100" style="transform: rotate(-7.45deg);">                            
+                            <svg class="svg-inline--fa fa-phone-flip text-primary fs-1 z-index-1 ms-2" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+                        </div>
+                        
+                        <p class="text-primary fs--1 mb-0 ms-3 mt-3">${data.nombre_nivel}</p>
+                      </div>
+                        <p class="text-primary mt-2 fs-2 fw-bold mb-0 mb-sm-4">${data.nombre_materia}</p>
+                    </div>                    
+                  </div>
+                </div>
+              </div>
+            </div>                        
+          </div>`;
+          $('#viewMaterias_maestro').append(cardMateria);
+
+        })
+    })
+}
+
+$('#btn_agregar_materia_maestro').click(function(){
+    
+    $.ajax({
+        url: 'controllers/maestros',
+        type: 'POST',
+        data: { id_maestro, action: 'get_info_maestro' }
+    }).done(data => {        
+        $('.nombre_maestro').text(data.nombre_completo_maestro)
+    })
+
+   
+
+
+    $('#add_materias').offcanvas('show');
+})
+
+
+$('.select-niveles').change(function(){
+    id_nivel=$(this).find(':selected').val();
+    
+    $.ajax({
+        url:'controllers/maestros.php',
+        type: 'POST',
+        data: {            
+            'id_maestro': id_maestro,
+            'id_nivel': id_nivel,
+            'action': 'get_materias_agregar'
+        }
+    }).done( materias => { 
+        
+       if(materias[1]){
+            
+            selectMaterias=`<option class="h5" value="${materias[1].id_materia}">${materias[1].nombre_materia}</option>`;
+            $('#select_asignar_materias').html(selectMaterias);
+       }
+
+       if(materias.length>0){
+            selectMaterias=``;               
+            materias.forEach(element => {
+                selectMaterias+=`<option class="h5" value="${element.id_materia}">${element.nombre_materia}</option>`;
+                
+            })
+            $('#select_asignar_materias').html(selectMaterias);
+       }
+    })
+
+
+})

@@ -1,5 +1,4 @@
-        <div class="offcanvas offcanvas-end settings-panel border-0" id="view_comprobante" tabindex="-1" aria-labelledby="settings-offcanvas" data-bs-backdrop="static"
-        data-bs-keyboard="false">
+        <div class="offcanvas offcanvas-end settings-panel border-0" id="view_comprobante" tabindex="-1" aria-labelledby="settings-offcanvas" data-bs-backdrop="static" data-bs-keyboard="false">
           <div class="offcanvas-header align-items-start border-bottom flex-column">
             <div class="pt-1 w-100 mb-1 d-flex justify-content-between align-items-start">
               <div>

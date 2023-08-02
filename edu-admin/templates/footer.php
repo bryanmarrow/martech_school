@@ -36,13 +36,14 @@
     <script src="vendors/list.js/list.min.js"></script>
     <script src="vendors/feather-icons/feather.min.js"></script>
     <script src="vendors/dayjs/dayjs.min.js"></script>
+    <script src="vendors/choices/choices.min.js"></script>    
     <script src="assets/js/phoenix.js"></script>
     <script src="vendors/echarts/echarts.min.js"></script>
     <script src="vendors/leaflet/leaflet.js"></script>
     <script src="vendors/leaflet.markercluster/leaflet.markercluster.js"></script>
     <script src="vendors/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js"></script>
     <script src="assets/js/ecommerce-dashboard.js"></script>
-    <script src="assets/js/datatables_edutrebol.js"></script>
+    <script src="assets/js/datatables_edutrebol.js"></script>    
     
     
 </body>

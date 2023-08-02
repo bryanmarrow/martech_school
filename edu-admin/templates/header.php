@@ -42,6 +42,7 @@
     <link href="assets/css/theme.min.css" type="text/css" rel="stylesheet" >    
     <link href="assets/css/user.min.css" type="text/css" rel="stylesheet" >
    
+    <link href="vendors/choices/choices.min.css" rel="stylesheet">
     <link href="vendors/leaflet/leaflet.css" rel="stylesheet">
     <link href="vendors/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
     <link href="vendors/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet">
@@ -94,6 +95,18 @@
                                     </span>
                                     <span class="nav-link-text-wrapper">
                                         <span class="nav-link-text">Grupos</span>
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="nav-item-wrapper">
+                            <a class="nav-link label-1" href="maestros?id_escuela=1" role="button" data-bs-toggle="" aria-expanded="false">
+                                <div class="d-flex align-items-center">
+                                    <span class="nav-link-icon">
+                                        <i class="far fa-folder-open"></i>
+                                    </span>
+                                    <span class="nav-link-text-wrapper">
+                                        <span class="nav-link-text">Maestros</span>
                                     </span>
                                 </div>
                             </a>
