@@ -25,7 +25,7 @@
         <div class="col-lg-12 div_cambiar_status">
             <label for="">Nivel</label>
             <select class="form-select mt-2 select-niveles mb-2">
-                <option value="">Seleccione una opción</option>
+                <option value="0">Seleccione una opción</option>
                 <?php 
                     $queryGrupos="SELECT * FROM catalogo_niveles";
                     $sql = $dbConn->prepare($queryGrupos);        
@@ -46,7 +46,7 @@
         </div>
         <div class="col-lg-12 mt-3">
         <div class="d-grid gap-2">
-                <button class="btn btn-primary btn_cambiar_status_comprobante" type="button">Asignar materia</button>
+                <button class="btn btn-primary btn_agregar_materias_maestro" type="button">Asignar materia</button>
             </div>
         </div>
         </div>
@@ -55,12 +55,13 @@
 </div>
 
 
-<div class="content">        
+<div class="content" id="page_materias_maestro">        
     <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white pt-7 border-y border-300">
     <div data-list='{"valueNames":["product","customer","rating","review","time"],"page":6}'>
         <div class="row align-items-end justify-content-between pb-5 g-3">
             <div class="col-auto">
-                <h3>Materias asignadas</h3>            
+                <h3 class="mb-3">Materias asignadas</h3>            
+                <h5><?= $nombre_completo ?></h5>
             </div>
             <div class="col-12 col-md-auto">
                 <div class="row g-2 gy-3">                

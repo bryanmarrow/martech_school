@@ -435,46 +435,94 @@ $(document).on('click', '#btn_cargar_alumnos', function(){
 })
 
 
+let tabla_maestros=new DataTable('#tabla_maestros', {    
+    dom: 'Blfrtip',
+    buttons: [
+        'copy',
+        'pdf',
+        'print'
+    ],
+    "responsive": true,
+    "pageLength": 10,
+    "order": [
+        [2, "desc"]
+    ],
+    "columnDefs": [{
+        // "targets": [0,1],
+        // "visible": false
+    }],
+    "ajax": {
+        "url": "controllers/maestros",
+        "method": 'POST',
+        "data": {
+            action: 'get_maestros_escuela',
+            id_escuela: id_escuela
+
+        },
+        "dataSrc": ""
+    },
+    "columns": [        
+        {
+            "data": "id_maestro"
+        },        
+        {
+            "data": "nombre_maestro"
+        },        
+        {
+            // width: 90,
+            "defaultContent":``,
+            "render": function (data, type, row, meta) {
+                return `                                        
+                    <a href="materias_maestro?id_maestro=${row['id_maestro']}" class="btn btn-primary btn-sm">Materias</a>
+                `;
+            }
+        }
+    ]
+});
 
 var setMateriasMaestro = () => {
 
-    $('#viewMaterias_maestro').empty();
+    if(document.getElementById('page_materias_maestro')){
+        
+    
+        $('#viewMaterias_maestro').empty();
 
-    $.ajax({
-        url:'controllers/maestros.php',
-        type: 'POST',
-        data: {            
-            'id_maestro': id_maestro,
-            'action': 'get_materias_maestro'
-        }
-    }).done( materias => {
-        console.log(materias)
+        $.ajax({
+            url:'controllers/maestros.php',
+            type: 'POST',
+            data: {            
+                'id_maestro': id_maestro,
+                'action': 'get_materias_maestro'
+            }
+        }).done( materias => {
+            console.log(materias)
 
-        materias.forEach(data => {
-            cardMateria=`
-            <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-4">
-              <div class="card h-100">
-                <div class="card-body">
-                  <div class="d-flex d-sm-block justify-content-between">
-                    <div class="border-bottom-sm mb-sm-4">
-                      <div class="d-flex align-items-center">
-                        <div class="d-flex align-items-center icon-wrapper-sm shadow-primary-100" style="transform: rotate(-7.45deg);">                            
-                            <svg class="svg-inline--fa fa-phone-flip text-primary fs-1 z-index-1 ms-2" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+            materias.forEach(data => {
+                cardMateria=`
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                    <div class="d-flex d-sm-block justify-content-between">
+                        <div class="border-bottom-sm mb-sm-4">
+                        <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center icon-wrapper-sm shadow-primary-100" style="transform: rotate(-7.45deg);">                            
+                                <svg class="svg-inline--fa fa-phone-flip text-primary fs-1 z-index-1 ms-2" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+                            </div>
+                            
+                            <p class="text-primary fs--1 mb-0 ms-3 mt-3">${data.nombre_nivel}</p>
                         </div>
-                        
-                        <p class="text-primary fs--1 mb-0 ms-3 mt-3">${data.nombre_nivel}</p>
-                      </div>
-                        <p class="text-primary mt-2 fs-2 fw-bold mb-0 mb-sm-4">${data.nombre_materia}</p>
-                    </div>                    
-                  </div>
+                            <p class="text-primary mt-2 fs-2 fw-bold mb-0 mb-sm-4">${data.nombre_materia}</p>
+                        </div>                    
+                    </div>
+                    </div>
                 </div>
-              </div>
-            </div>                        
-          </div>`;
-          $('#viewMaterias_maestro').append(cardMateria);
+                </div>                        
+            </div>`;
+            $('#viewMaterias_maestro').append(cardMateria);
 
+            })
         })
-    })
+    }
 }
 
 $('#btn_agregar_materia_maestro').click(function(){
@@ -507,15 +555,10 @@ $('.select-niveles').change(function(){
         }
     }).done( materias => { 
         
-       if(materias[1]){
-            
-            selectMaterias=`<option class="h5" value="${materias[1].id_materia}">${materias[1].nombre_materia}</option>`;
-            $('#select_asignar_materias').html(selectMaterias);
-       }
-
-       if(materias.length>0){
+        
+       if(Object.values(materias).length>0){            
             selectMaterias=``;               
-            materias.forEach(element => {
+            Object.values(materias).forEach(element => {
                 selectMaterias+=`<option class="h5" value="${element.id_materia}">${element.nombre_materia}</option>`;
                 
             })
@@ -523,5 +566,55 @@ $('.select-niveles').change(function(){
        }
     })
 
+
+})
+
+$('.btn_agregar_materias_maestro').click(function(){
+    var materias_para_asignar = $('#select_asignar_materias').val(); 
+    $.ajax({
+        url:'controllers/maestros.php',
+        type: 'POST',
+        data: {            
+            materias_para_asignar,
+            id_maestro,
+            'action': 'agregar_materias_maestro'
+        }
+    }).done( ({respuesta, mensaje}) => { 
+        
+        switch(respuesta){
+            case 'success':
+                setMateriasMaestro()                
+                $('#select_asignar_materias').empty();
+                $(".select-niveles").prop('selectedIndex', 0);
+
+                $('#add_materias').offcanvas('hide');
+                Alert.fire({
+                    icon: 'success',
+                    title: mensaje
+                })
+                break;
+            case 'error':
+                Alert.fire({
+                    icon: 'danger',
+                    title: 'Ocurrió un error'
+                })
+                break;
+        }   
+    })
+
+    
+})
+
+$('.btn_cerrar_sesion_admin').click(function(){
+    
+    $.ajax({
+        url:'controllers/login_admin.php',
+        type: 'POST', 
+        data : {
+            action: 'logout_admin'
+        }       
+    }).done( data => { 
+        window.location.href = "../edu-admin/login";
+    })
 
 })

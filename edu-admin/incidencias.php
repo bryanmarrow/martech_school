@@ -4,7 +4,7 @@
   include $rootPath.'config/db.php';
   require 'templates/session_manager.php';
   
-  $title = isset($_GET['title'])? $_GET['title'] : 'Inicio - '.$nombrePagina;
+  $title = isset($_GET['title'])? $_GET['title'] : 'Incidencias - '.$nombrePagina;
   $description = isset($_GET['description'])? $_GET['description'] : $descripcionPagina;
   $keywords = isset($_GET['keywords'])? $_GET['keywords'] : $tagsPagina;
   $author = isset($_GET['author'])? $_GET['author'] : $authorPagina;
@@ -14,7 +14,7 @@
 
   
   require($rootPath."templates/header.php");
-  require($rootPath."pages/home.inc.php");
+  require($rootPath."pages/incidencias.inc.php");
   require($rootPath."templates/footer.php");
 
 

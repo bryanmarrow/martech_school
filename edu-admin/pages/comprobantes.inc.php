@@ -70,23 +70,27 @@
                   </div>
                 </div>
               </div>          
-              <table id="tabla_comprobantes" class="table fs--1 mb-0 border-top border-200">
-                  <thead>
-                      <tr class="white-space-nowrap fs--1 ps-0 align-middle">
-                          <th></th> 
-                          <th>#</th>
-                          <th>Fecha</th>
-                          <th>Estudiante</th>
-                          <th>Cuota</th>
-                          <th>Ciclo Escolar</th>                        
-                          <th>Status</th>       
-                          <th></th>                 
-                          <th></th>                 
-                      </tr>
-                  </thead>
-                  <tbody>                   
-                  </tbody>
-              </table>
+              <div class="row">
+                <div class="col-lg-12">
+                <table id="tabla_comprobantes" class="table table-hover  fs--1 mb-0 border-top border-200 nowrap" style="width:100%">
+                    <thead>
+                        <tr class="white-space-nowrap fs--1 ps-0 align-middle">
+                            <th></th> 
+                            <th>#</th>
+                            <th>Fecha</th>
+                            <th>Estudiante</th>
+                            <th>Cuota</th>
+                            <th>Ciclo Escolar</th>                        
+                            <th>Status</th>       
+                            <th></th>                 
+                            <th></th>                 
+                        </tr>
+                    </thead>
+                    <tbody>                   
+                    </tbody>
+                  </table>
+                </div>
+              </div>
          
           </div>
         </div>

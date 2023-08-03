@@ -9,6 +9,17 @@
     $data_response=array();
 
     switch ($action) {
+        case 'get_maestros_escuela':
+            $id_escuela=$_POST['id_escuela'];
+                    
+            $queryGrupos="CALL proc_get_maestros('".$id_escuela."')";
+            $sql = $dbConn->prepare($queryGrupos);        
+            $sql->execute();         
+            
+            $dataSuccessResponse=$sql->fetchAll();
+            header('Content-Type: application/json');
+            echo json_encode($dataSuccessResponse);
+            break;
         case 'get_materias_maestro':                                              
             $id_maestro=$_POST['id_maestro'];
             
@@ -46,28 +57,40 @@
             $getMateriasActuales=getFetchDataProcStored('proc_get_materias_maestro', $params);
             $getMateriasActivas=getFetchDataProcStored('proc_get_materias', $params_nivel);
 
-            
-            // $materiasactuales=array();                        
-            // foreach($getMateriasActuales['data'] as $row){
-            //     array_push($materiasactuales, $row['nombre_materia']);
-            // }
-
-            // $materiasactivas=array();                        
-            // foreach($getMateriasActivas['data'] as $row){
-            //     array_push($materiasactivas, $row['nombre_materia']);
-            // }
-
             $materias_restantes=array_udiff($getMateriasActivas['data'], $getMateriasActuales['data'], function ($a, $b) {
                 return strcmp($a['id_materia'], $b['id_materia']);
             });
-            
-            // var_dump($getMateriasActivas['data']);
-            // var_dump($getMateriasActuales['data']);
-
-            // var_dump($materias_restantes);
 
             header('Content-Type: application/json');
             echo json_encode($materias_restantes);
+            break;
+        case 'agregar_materias_maestro':
+            $materias_asignar_maestro=$_POST['materias_para_asignar'];            
+            $id_maestro=$_POST['id_maestro'];
+
+            
+            try{
+                $result_proc=array();
+                for ($i=0; $i < count($materias_asignar_maestro); $i++) { 
+                    $params=array(
+                        'id_materia' => $materias_asignar_maestro[$i],
+                        'id_maestro' => $id_maestro
+                    );
+                    $asignar_materia=callProcStored('proc_asignar_materia', $params);
+                    array_push($result_proc, $asignar_materia);
+                }
+                $response=array(
+                    'respuesta'=> 'success',
+                    'mensaje' => 'Materias asignadas correctamente'
+                );
+            }catch(PDOException $e){
+                $response=array(
+                    'respuesta'=> 'error',
+                    'mensaje' =>  $e->getMessage()
+                );
+            }
+            header('Content-Type: application/json');
+            echo json_encode($response);
             break;
         default:
             $data_response=array(

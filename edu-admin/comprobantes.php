@@ -2,6 +2,7 @@
 
   $rootPath = "./";  
   include $rootPath.'config/db.php';
+  require 'templates/session_manager.php';
   
   $title = isset($_GET['title'])? $_GET['title'] : 'Comprobantes - '.$nombrePagina;
   $description = isset($_GET['description'])? $_GET['description'] : $descripcionPagina;

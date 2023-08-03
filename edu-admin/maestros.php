@@ -2,6 +2,7 @@
 
   $rootPath = "./";  
   include $rootPath.'config/db.php';
+  require 'templates/session_manager.php';
   
   $title = isset($_GET['title'])? $_GET['title'] : 'Comprobantes - '.$nombrePagina;
   $description = isset($_GET['description'])? $_GET['description'] : $descripcionPagina;
@@ -12,6 +13,14 @@
   $ogimagen = isset($_GET['ogimagen'])? $_GET['ogimagen'] : $imagenPagina;
 
   
+  $params=array(
+    'id_escuela' => $_GET['id_escuela']
+  );
+  $data_escuela=getDataProcStored('proc_get_info_escuela', $params)['data'];
+
+  $nombre_escuela=$data_escuela['nombre_escuela'];
+  
+
   require($rootPath."templates/header.php");
   require($rootPath."pages/maestros.inc.php");
   require($rootPath."templates/footer.php");

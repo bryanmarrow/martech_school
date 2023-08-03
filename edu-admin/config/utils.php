@@ -140,7 +140,8 @@ function callProcStored($proc_stored, $data_proc_tore){
         $datarespuesta=array(
             'respuesta' => 'success',
             'mensaje' => $dataSuccessResponse['MSG'],
-            'id_agregado' => $dataSuccessResponse['LAST_INSERT_ID']
+            'id_agregado' => $dataSuccessResponse['LAST_INSERT_ID'],
+            'data_insert' => $data_proc_tore
         );
 
     }catch(PDOException $e){
